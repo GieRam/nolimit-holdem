@@ -1,0 +1,30 @@
+{
+  "name": "nolimit-holdem",
+  "version": "1.0.0",
+  "description": "no limit holdem",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha src/test/**.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GieRam/nolimit-holdem.git"
+  },
+  "keywords": [
+    "no",
+    "limit",
+    "holdem",
+    "cards",
+    "poker"
+  ],
+  "author": "Giedrius Ramasauskas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GieRam/nolimit-holdem/issues"
+  },
+  "homepage": "https://github.com/GieRam/nolimit-holdem#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
+}
