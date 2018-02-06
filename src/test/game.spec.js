@@ -14,17 +14,21 @@ describe('Game module', () => {
         return { 1: { id: uuidv4() }, 2: { id: uuidv4() }};
     }
 
-    describe('add player', () => {
-        it('should add player', () => {
+    describe('seat player', () => {
+        it('should seat player', () => {
             let players = {};
-            players = Game.addPlayer(players, { id: uuidv4()});
+            players = Game.seatPlayer(players, { id: uuidv4() }, 1);
             expect(R.keys(players).length).to.eq(1);
-            expect(R.keys(players)[0].length).to.eq("97ef5b6e-aeee-4932-9db9-3854d88e5105".length);
+            expect(players[1]['id'].length).to.eq("97ef5b6e-aeee-4932-9db9-3854d88e5105".length);
         });
         it('should allow 2 players', () => {
-            let players = Game.addPlayer({}, { id: uuidv4()});
-            players = Game.addPlayer(players, { id: uuidv4()});
+            let players = Game.seatPlayer({}, { id: uuidv4()}, 1);
+            players = Game.seatPlayer(players, { id: uuidv4()}, 2);
             expect(Object.keys(players).length).to.eq(2);
+        });
+        it('should not allow seating player in filled seat', () => {
+            let players = Game.seatPlayer({}, { id: uuidv4()}, 1);
+            expect(() => Game.seatPlayer(players, { id: uuidv4() }, 1)).to.throw("Seat is taken");
         });
     });
     describe('availableSeats', () => {
@@ -72,21 +76,16 @@ describe('Game module', () => {
             expect(players[1].holdingCards.length).to.eq(2);
             expect(players[2].holdingCards.length).to.eq(2);
         });
-        // TODO: Refactor players to be an array.. now its an object with integer indexes which is an array normally.
         it('should deal different cards on consecutive tries', () => {
+            // Can actually be deleted because there's a chance holding cards will be same minor % of the time.
             let playersFirst = getHeadsUpTable();
             let playersSecond = getHeadsUpTable();
             const deck = require("../main/deck");
             playersFirst = Game.dealTable(playersFirst, Game.shuffleDeck(deck));
             playersSecond = Game.dealTable(playersSecond, Game.shuffleDeck(deck));
 
-            // TODO: Assert holdingCards are not identical.
+            expect(playersFirst["1"]["holdingCards"]).to.not.deep.equal(playersSecond["1"]["holdingCards"]);
+            expect(playersFirst["2"]["holdingCards"]).to.not.deep.equal(playersSecond["2"]["holdingCards"]);
         });
-
-        function inArray(subArray, array) {
-            return subArray.filter((it) => {
-                return R.contains(it, array);
-            }).length === subArray.length;
-        }
     });
 });

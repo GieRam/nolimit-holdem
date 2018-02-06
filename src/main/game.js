@@ -4,7 +4,10 @@ const R = require("ramda");
 const uuidv4 = require("uuidv4");
 
 function seatPlayer(players, player, seat) {
-    return R.assoc(seat, player, players);
+    if (R.isNil(players[seat])) {
+        return R.assoc(seat, player, players);
+    }
+    throw new Error("Seat is taken");
 }
 
 function availableSeats(players) {
