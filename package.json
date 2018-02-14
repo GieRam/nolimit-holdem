@@ -4,6 +4,7 @@
   "description": "no limit holdem",
   "main": "index.js",
   "scripts": {
+    "start": "node src/main/index.js",
     "test": "mocha src/test/**.spec.js"
   },
   "repository": {

@@ -4,7 +4,7 @@ const { describe, it } = require("mocha");
 const { expect } = require("chai");
 const uuidv4 = require("uuidv4");
 
-const Game = require("../main/game");
+const Game = require("../main/domain/table");
 
 const R = require("ramda");
 
@@ -70,8 +70,8 @@ describe('Game module', () => {
     describe('deal', () => {
         it('should give each player 2 cards from deck', () => {
             let players = getHeadsUpTable();
-            const deck = require("../main/deck");
-            players = Game.dealTable(players, deck);
+            const deck = require("../main/domain/deck");
+            players = Game.dealPreflop(players, deck);
             expect(deck.length).to.eq(48);
             expect(players[1].holdingCards.length).to.eq(2);
             expect(players[2].holdingCards.length).to.eq(2);
@@ -80,9 +80,9 @@ describe('Game module', () => {
             // Can actually be deleted because there's a chance holding cards will be same minor % of the time.
             let playersFirst = getHeadsUpTable();
             let playersSecond = getHeadsUpTable();
-            const deck = require("../main/deck");
-            playersFirst = Game.dealTable(playersFirst, Game.shuffleDeck(deck));
-            playersSecond = Game.dealTable(playersSecond, Game.shuffleDeck(deck));
+            const deck = require("../main/domain/deck");
+            playersFirst = Game.dealPreflop(playersFirst, Game.shuffleDeck(deck));
+            playersSecond = Game.dealPreflop(playersSecond, Game.shuffleDeck(deck));
 
             expect(playersFirst["1"]["holdingCards"]).to.not.deep.equal(playersSecond["1"]["holdingCards"]);
             expect(playersFirst["2"]["holdingCards"]).to.not.deep.equal(playersSecond["2"]["holdingCards"]);
